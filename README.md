@@ -21,6 +21,7 @@ To identify the most effective players in each position using real performance d
 - 🔲 Finalize weighting logic per position
 - 🔲 Export SQL outputs for visualization
 - 🔲 Publish data-driven TOTS and compare to official TOTS
+- 🔲 Expand to include multiple TOTS from pundits to compare
 
 ---
 
