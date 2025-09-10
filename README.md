@@ -20,7 +20,7 @@ Unlike media or fan-voted TOTS, this selection is based **entirely on performanc
 - ✅ **Python Loader**: Python script built to insert scraped data into the database.  
 - ✅ **Initial Queries**: Basic SELECT queries to pull raw stats.  
 - ✅ **Normalization**: Using SQL `OVER()` for min–max scaling.  
-- 🔲 **Position Bundles**: Finalize metrics used per position.  
+- ✅ **Position Bundles**: Finalize metrics used per position.  
 - 🔲 **Weighting System**: Assign stat weights for GK, DEF, MID, FW.  
 - 🔲 **Composite Scores**: SQL queries to calculate ranking scores.  
 - 🔲 **Filtering**: Exclude players with too few minutes played.  
@@ -51,4 +51,29 @@ The project follows a clear SQL-first workflow to move from raw player stats to 
 - Example:
   ```sql
   (stat - MIN(stat) OVER()) / (MAX(stat) OVER() - MIN(stat) OVER())
+
+## 📊 Metrics Analysed per Position
+
+## 📊 Metrics Analysed per Position
+
+| Position       | Key Metrics                                                                 |
+|----------------|------------------------------------------------------------------------------|
+| 🧤 Goalkeepers | Saves, save %, goals prevented (vs xG), pass completion, long distribution (40+ yards), average pass length, crosses faced & stopped, defensive actions outside box, goals conceded (OG not heavily weighted) |
+| 🛡️ Defenders  | Tackles won, interceptions, clearances, blocks, aerial duels won, pass completion, progressive passes, fouls, errors leading to shots/goals |
+| 🎩 Midfielders | Pass completion, progressive passes, passes into final third, key passes, assists, xA, tackles, interceptions, recoveries, goals, shots on target, dribbles completed |
+| 🎯 Forwards   | Goals, non-penalty goals, xG, conversion rate, shots on target %, progressive carries, assists, xA, key passes, dribbles, pressures, light defensive contribution |
+
+---
+
+### 🧤 Goalkeepers  
+Evaluated on **shot-stopping, distribution, and command of their area**. Metrics like saves, save %, and goals prevented measure shot-stopping ability, while passing and distribution metrics capture modern sweeper-keeper responsibilities.  
+
+### 🛡️ Defenders  
+Judged on **defensive solidity and ball progression**. Tackles, interceptions, and aerial duels highlight defensive strength, while progressive passes and pass accuracy show their role in buildup play.  
+
+### 🎩 Midfielders  
+Assessed on **all-around influence** in both attack and defense. Passing metrics (progressive, key, final third) measure creativity, while tackles, interceptions, and recoveries track defensive work. Goals and assists provide an extra dimension for more advanced midfielders.  
+
+### 🎯 Forwards  
+Ranked by **scoring efficiency and attacking contribution**. Goals, xG, and conversion rates measure finishing, while xA, key passes, and dribbles capture creativity. Pressures and defensive work are included but weighted lightly.  
 
