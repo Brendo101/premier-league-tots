@@ -52,7 +52,7 @@ The project follows a clear SQL-first workflow to move from raw player stats to 
   ```sql
   (stat - MIN(stat) OVER()) / (MAX(stat) OVER() - MIN(stat) OVER())
 
-## 📊 Metrics Analysed per Position
+  ---
 
 ## 📊 Metrics Analysed per Position
 
