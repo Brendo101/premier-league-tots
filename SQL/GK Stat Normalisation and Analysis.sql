@@ -40,8 +40,21 @@ SELECT
 	
 FROM PassComp)
 
-SELECT * 
+SELECT 
+TOTS,
+Player,
+Squad,
+Pos1, 
+Minutes,
+0.1 * norm_PSxG +
+0.1 * norm_PSxGallowed90 +
+0.2 * norm_PSxGperShotonTarget +
+0.2 * norm_PSxGminusgoalsallowed +
+0.1 * norm_crossstopperc +
+0.05 * norm_defactionoutsidepen90 +
+0.05 * norm_passcomp40 +
+0.2 * norm_errors as TotalScore
 
 FROM normalized
 
--- TO BE CONTINUED
+Order By TotalScore DESC
