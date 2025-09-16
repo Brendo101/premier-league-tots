@@ -12,6 +12,10 @@ PassComp AS (
 		(CAST(passescompetedover40yards as decimal(10,4)) / NULLIF (passesattemtedover40yards,0)) * 100 as passcomp40
 	FROM Filtered
 ),
+ErrorsPerMinute AS (
+	Select *,
+		CAST(Errors * 1.0/NULLIF(Minutes,0) as decimal(10,4)) as ErrorsPM
+	From PassComp),
 Normalized AS (
 SELECT 
 	TOTS,
@@ -36,9 +40,9 @@ SELECT
 
 	(CAST(Touches AS float) - MIN(Touches) OVER())/ NULLIF(MAX(Touches) OVER () - MIN(Touches) OVER(), 0) AS norm_Touches, -- Ball Touches
 
-	(CAST(Errors AS float) - MAX(Errors) OVER())/ NULLIF(MIN(Errors) OVER () - MAX(Errors) OVER(), 0) AS norm_Errors -- Mistakes Leading To Opponents Shot
+	(CAST(ErrorsPM AS float) - MAX(ErrorsPM) OVER())/ NULLIF(MIN(ErrorsPM) OVER () - MAX(ErrorsPM) OVER(), 0) AS norm_Errors -- Mistakes Leading To Opponents Shot
 	
-FROM PassComp)
+FROM ErrorsPerMinute)
 
 SELECT 
 TOTS,
@@ -46,15 +50,21 @@ Player,
 Squad,
 Pos1, 
 Minutes,
-0.1 * norm_PSxG +
-0.1 * norm_PSxGallowed90 +
-0.2 * norm_PSxGperShotonTarget +
-0.2 * norm_PSxGminusgoalsallowed +
+MP,
+Nineties,
+CAST(0.2 * norm_PSxG + --NB
+0.05 * norm_PSxGallowed90 +
+0.1 * norm_PSxGperShotonTarget +
+0.1 * norm_PSxGminusgoalsallowed +
 0.1 * norm_crossstopperc +
-0.05 * norm_defactionoutsidepen90 +
-0.05 * norm_passcomp40 +
-0.2 * norm_errors as TotalScore
+0.05 * norm_defactionoutsidepen90 + 
+0.2 * norm_passcomp40 + --NB
+0.2 * norm_errors as Decimal(10,2)) as TotalScore --NB
 
 FROM normalized
 
 Order By TotalScore DESC
+
+-- Add total Goals Allowed as well as PSxGMinusGoalsAllowed to show a visualisation of goals allowed and goals that shouldve been allowed
+
+-- Save percentage, PSxG and distribution accuracy top 3

@@ -13,21 +13,22 @@ SELECT
       [clearances],
       [shotsblocked],
       [passesblocked],
+      [challengeslost],
+      [percentdribblerstackled],
 
       -- Errors / discipline
-      [errors],
+      errors,
       [CrdY],
       [CrdR],
+      [Dispossessed]
 
       -- Progression & buildup
       [ProgPasses],
       [ProgCarries],
-      [Touches],
-
-      -- Attacking contribution (small)
-      [nonpengoals],
-      [Ast],
-      [shotcreatingactions]
+      [Touches]
 
 FROM [dbo].[SoccerPlayerStats]
 WHERE Pos1 = 'DF';
+
+-- CrdR, CrdY, clearances (create per minute), challengeslost (number of unsuccessful attempts to challenge dribbling player), 
+-- tackles, tklwon (tklwin%), shotsblocked, percentdribblerstackled, dispossessed, progpasses, progcarries, touches, 
