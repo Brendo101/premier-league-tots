@@ -6,19 +6,23 @@ With Filtered AS (
 	WHERE Minutes >= 1800
 	AND Pos1 = 'GK'
 ),
+
 PassComp AS (
 	SELECT 
 		*,
 		(CAST(passescompetedover40yards as decimal(10,4)) / NULLIF (passesattemtedover40yards,0)) * 100 as passcomp40
 	FROM Filtered
 ),
+
 ErrorsPerMinute AS (
 	Select *,
 		CAST(Errors * 1.0/NULLIF(Minutes,0) as decimal(10,4)) as ErrorsPM
 	From PassComp),
+
 Normalized AS (
 SELECT 
 	TOTS,
+	PremFanTots,
 	Player,
 	Squad,
 	Pos1,
@@ -46,6 +50,7 @@ FROM ErrorsPerMinute)
 
 SELECT 
 TOTS,
+PremFanTots,
 Player,
 Squad,
 Pos1, 
@@ -61,7 +66,7 @@ CAST(0.2 * norm_PSxG + --NB
 0.2 * norm_passcomp40 + --NB
 0.2 * norm_errors as Decimal(10,2)) as TotalScore --NB
 
-FROM normalized
+FROM Normalized
 
 Order By TotalScore DESC
 

@@ -1,6 +1,8 @@
-SELECT *
-  FROM [dbo].[SoccerPlayerStats]
 
+
+ Select * From [dbo].[SoccerPlayerStats]
+
+  
   -- Fans TOTS
 
   --Mats Sels GK

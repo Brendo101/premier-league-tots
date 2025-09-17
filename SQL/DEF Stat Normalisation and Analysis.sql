@@ -8,6 +8,7 @@ With Filtered AS (
 AlteredtoRate AS (
 	select
 		TOTS,
+		PremFanTots,
 		Player,
 		Squad,
 		Pos1, 
@@ -21,6 +22,7 @@ AlteredtoRate AS (
 		Cast(tackles as decimal(10,4)) / NULLIF(Minutes,0) as tklspermin, --tkls
 		Cast(TklWon as decimal(10,4)) / NULLIF(Minutes,0) as tklswonpermin, --tklwin
 		--Cast(Challengeslost as decimal(10,4)) / NULLIF(Minutes,0) as tklwinpercpermin, --tklwin%
+
 		Cast(shotsblocked as decimal(10,4)) / NULLIF(Minutes,0) as shotsblockedpermin, --shotsblocked
 		Cast(Dispossessed as decimal(10,4)) / NULLIF(Minutes,0) as dispossessedpermin, --dispossessed
 		Cast(ProgPasses as decimal(10,4)) / NULLIF(Minutes,0) as progpassespermin, --progpasses
@@ -35,9 +37,27 @@ AddingRates AS (
 		*,
 		tklspermin/NULLIF(tklswonpermin, 0) as tklwinpercpermin
 	FROM AlteredtoRate
-)
+),
 
-Select * From AddingRates
+Normalized AS (
+	SELECT
+		TOTS,
+		PremFanTots,
+		Player,
+		Squad,
+		Pos1, 
+		Minutes,
+		MP,
+		Nineties,
+		CAST((clearancespermin - MIN(clearancespermin) OVER()) / NULLIF(MAX(clearancespermin) OVER() - MIN(clearancespermin) OVER(), 0) as Decimal(10,4)) as norm_clearances,
+		CAST((challengeslostpermin - MAX(challengeslostpermin) OVER ()) / NULLIF(MIN(challengeslostpermin) OVER() - MAX(challengeslostpermin) OVER(), 0) as Decimal(10,4)) as norm_challengeslost,
+		CAST((yellowcardspermin - MAX(yellowcardspermin) OVER ()) / NULLIF(MIN(yellowcardspermin) OVER () - MAX(yellowcardspermin) OVER(), 0) as Decimal(10,4)) as norm_yellowcards,
+		CAST((redcardspermin - MAX(redcardspermin) OVER ()) / NULLIF(MIN(redcardspermin) OVER () - MAX(redcardspermin) OVER(), 0) as Decimal(10,4)) as norm_redcards,
+		CAST((tklwinpercpermin - MIN(tklwinpercpermin) OVER()) / NULLIF(MAX(tklwinpercpermin) OVER() - MIN(tklwinpercpermin) OVER(), 0) as Decimal(10,4)) as norm_tklwinperc
+From AddingRates)
+
+SELECT * From Normalized
+
 	
 
 

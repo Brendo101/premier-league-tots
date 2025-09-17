@@ -1,0 +1,11 @@
+Half Way Through, Added A second TOTS column to be able to compare to both
+Alter Table dbo.SoccerPlayerStats
+Add PremFanTots VARCHAR(3);
+
+Update [dbo].[SoccerPlayerStats]
+Set PremFanTots = Case
+When Player IN ('Matz Sels', 'Daniel Muñoz', 'Virgil Van Dijk', 'William Saliba', 'Milos Kerkez', 'Mohamed Salah', 'Ryan Gravenberch', 'Declan Rice', 'Bryan Mbeumo', 'Alexander Isak', 'Chris Wood') Then 'Yes'
+Else 'No'
+End;
+
+Scoring Logic Per Position:
