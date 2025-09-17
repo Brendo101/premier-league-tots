@@ -53,7 +53,12 @@ Normalized AS (
 		CAST((challengeslostpermin - MAX(challengeslostpermin) OVER ()) / NULLIF(MIN(challengeslostpermin) OVER() - MAX(challengeslostpermin) OVER(), 0) as Decimal(10,4)) as norm_challengeslost,
 		CAST((yellowcardspermin - MAX(yellowcardspermin) OVER ()) / NULLIF(MIN(yellowcardspermin) OVER () - MAX(yellowcardspermin) OVER(), 0) as Decimal(10,4)) as norm_yellowcards,
 		CAST((redcardspermin - MAX(redcardspermin) OVER ()) / NULLIF(MIN(redcardspermin) OVER () - MAX(redcardspermin) OVER(), 0) as Decimal(10,4)) as norm_redcards,
-		CAST((tklwinpercpermin - MIN(tklwinpercpermin) OVER()) / NULLIF(MAX(tklwinpercpermin) OVER() - MIN(tklwinpercpermin) OVER(), 0) as Decimal(10,4)) as norm_tklwinperc
+		CAST((tklwinpercpermin - MIN(tklwinpercpermin) OVER()) / NULLIF(MAX(tklwinpercpermin) OVER() - MIN(tklwinpercpermin) OVER(), 0) as Decimal(10,4)) as norm_tklwinperc,
+		CAST((shotsblockedpermin - MIN(shotsblockedpermin) OVER()) / NULLIF(MAX(shotsblockedpermin) OVER() - MIN(shotsblockedpermin) OVER(), 0) as Decimal(10,4)) as norm_shotsblocked,
+		CAST((dispossessedpermin - MAX(dispossessedpermin) OVER ()) / NULLIF(MIN(dispossessedpermin) OVER () - MAX(dispossessedpermin) OVER(), 0) as Decimal(10,4)) as norm_dispossessed,
+		CAST((progpassespermin - MIN(progpassespermin) OVER()) / NULLIF(MAX(progpassespermin) OVER() - MIN(progpassespermin) OVER(), 0) as Decimal(10,4)) as norm_progpasses,
+		CAST((touchespermin - MIN(touchespermin) OVER()) / NULLIF(MAX(touchespermin) OVER() - MIN(touchespermin) OVER(), 0) as Decimal(10,4)) as norm_touches,
+		CAST((errorspermin - MAX(errorspermin) OVER ()) / NULLIF(MIN(errorspermin) OVER () - MAX(errorspermin) OVER(), 0) as Decimal(10,4)) as norm_errors
 From AddingRates)
 
 SELECT * From Normalized
