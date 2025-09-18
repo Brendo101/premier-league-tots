@@ -28,7 +28,10 @@ AlteredtoRate AS (
 		Cast(ProgPasses as decimal(10,4)) / NULLIF(Minutes,0) as progpassespermin, --progpasses
 		Cast(ProgCarries as decimal(10,4)) / NULLIF(Minutes,0) as progcarriespermin, --progcarries
 		Cast(Touches as decimal(10,4)) / NULLIF(Minutes,0) as touchespermin, --touches
-		Cast(errors as decimal(10,4)) / NULLIF(Minutes,0) as errorspermin --errors that lead to shot on goal
+		Cast(errors as decimal(10,4)) / NULLIF(Minutes,0) as errorspermin, --errors that lead to shot on goal
+		Cast(passedblocked as decimal(10,4)) / NULLIF(Minutes,0) as passesblockedpermin
+		--passesblocked
+		--percentdribblerstackled
 	From Filtered
 ),
 
@@ -59,9 +62,30 @@ Normalized AS (
 		CAST((progpassespermin - MIN(progpassespermin) OVER()) / NULLIF(MAX(progpassespermin) OVER() - MIN(progpassespermin) OVER(), 0) as Decimal(10,4)) as norm_progpasses,
 		CAST((touchespermin - MIN(touchespermin) OVER()) / NULLIF(MAX(touchespermin) OVER() - MIN(touchespermin) OVER(), 0) as Decimal(10,4)) as norm_touches,
 		CAST((errorspermin - MAX(errorspermin) OVER ()) / NULLIF(MIN(errorspermin) OVER () - MAX(errorspermin) OVER(), 0) as Decimal(10,4)) as norm_errors
+		--passesblocked
 From AddingRates)
 
-SELECT * From Normalized
+--SELECT * From Normalized
+
+Select 
+	TOTS,
+	PremFanTots,
+	Player,
+	Squad,
+	Pos1,
+	Minutes,
+	MP,
+	Nineties,
+	CAST(
+	0.2 * norm_tklwinperc +
+	0.2 * norm_challengeslost +
+	0.1 * norm_errors +
+	0.1 * norm_progpasses 
+	 as decimal(10,2)) as TotalScore
+
+	 From Normalized
+
+	 ORDER BY TotalScore DESC
 
 	
 
