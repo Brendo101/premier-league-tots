@@ -30,7 +30,8 @@ AlteredtoRate AS (
 		Cast(ProgCarries as decimal(10,4)) / NULLIF(Minutes,0) as progcarriespermin, --progcarries
 		Cast(Touches as decimal(10,4)) / NULLIF(Minutes,0) as touchespermin, --touches
 		Cast(errors as decimal(10,4)) / NULLIF(Minutes,0) as errorspermin, --errors that lead to shot on goal
-		Cast(passesblocked as decimal(10,4)) / NULLIF(Minutes,0) as passesblockedpermin
+		Cast(passesblocked as decimal(10,4)) / NULLIF(Minutes,0) as passesblockedpermin,
+		Cast(intercepts as decimal(10,4)) / NULLIF(Minutes,0) as interceptspermin
 
 	
 	From Filtered
@@ -53,18 +54,20 @@ Normalized AS (
 		Minutes,
 		MP,
 		Nineties,
-		/*0.05*/CAST((clearancespermin - MIN(clearancespermin) OVER()) / NULLIF(MAX(clearancespermin) OVER() - MIN(clearancespermin) OVER(), 0) as Decimal(10,4)) as norm_clearances,
-		/*1*/CAST((challengeslostpermin - MAX(challengeslostpermin) OVER ()) / NULLIF(MIN(challengeslostpermin) OVER() - MAX(challengeslostpermin) OVER(), 0) as Decimal(10,4)) as norm_challengeslost,
-		/*0.025*/CAST((yellowcardspermin - MAX(yellowcardspermin) OVER ()) / NULLIF(MIN(yellowcardspermin) OVER () - MAX(yellowcardspermin) OVER(), 0) as Decimal(10,4)) as norm_yellowcards,
-		/*0.05*/CAST((redcardspermin - MAX(redcardspermin) OVER ()) / NULLIF(MIN(redcardspermin) OVER () - MAX(redcardspermin) OVER(), 0) as Decimal(10,4)) as norm_redcards,
-		/*2*/CAST((tklwinpercpermin - MIN(tklwinpercpermin) OVER()) / NULLIF(MAX(tklwinpercpermin) OVER() - MIN(tklwinpercpermin) OVER(), 0) as Decimal(10,4)) as norm_tklwinperc,
-		/*1*/CAST((shotsblockedpermin - MIN(shotsblockedpermin) OVER()) / NULLIF(MAX(shotsblockedpermin) OVER() - MIN(shotsblockedpermin) OVER(), 0) as Decimal(10,4)) as norm_shotsblocked,
-		/*2*/CAST((dispossessedpermin - MAX(dispossessedpermin) OVER ()) / NULLIF(MIN(dispossessedpermin) OVER () - MAX(dispossessedpermin) OVER(), 0) as Decimal(10,4)) as norm_dispossessed,
-		/*0.05*/CAST((progpassespermin - MIN(progpassespermin) OVER()) / NULLIF(MAX(progpassespermin) OVER() - MIN(progpassespermin) OVER(), 0) as Decimal(10,4)) as norm_progpasses,
-		/*0.025*/CAST((touchespermin - MIN(touchespermin) OVER()) / NULLIF(MAX(touchespermin) OVER() - MIN(touchespermin) OVER(), 0) as Decimal(10,4)) as norm_touches,
-		/*1*/CAST((errorspermin - MAX(errorspermin) OVER ()) / NULLIF(MIN(errorspermin) OVER () - MAX(errorspermin) OVER(), 0) as Decimal(10,4)) as norm_errors,
-		/*0.05*/CAST((passesblockedpermin - MIN(passesblockedpermin) OVER()) / NULLIF(MAX(passesblockedpermin) OVER() - MIN(passesblockedpermin) OVER(), 0) as Decimal(10,4)) as norm_passesblocked,
-		/*0.05*/CAST((percentdribblerstackled - MIN(percentdribblerstackled) OVER()) / NULLIF(MAX(percentdribblerstackled) OVER() - MIN(percentdribblerstackled) OVER(), 0) as Decimal(10,4)) as norm_dribblerstackledperc
+		/*6%*/CAST((clearancespermin - MIN(clearancespermin) OVER()) / NULLIF(MAX(clearancespermin) OVER() - MIN(clearancespermin) OVER(), 0) as Decimal(10,4)) as norm_clearances,
+		/*10%*/CAST((challengeslostpermin - MAX(challengeslostpermin) OVER ()) / NULLIF(MIN(challengeslostpermin) OVER() - MAX(challengeslostpermin) OVER(), 0) as Decimal(10,4)) as norm_challengeslost,
+		/*1%*/CAST((yellowcardspermin - MAX(yellowcardspermin) OVER ()) / NULLIF(MIN(yellowcardspermin) OVER () - MAX(yellowcardspermin) OVER(), 0) as Decimal(10,4)) as norm_yellowcards,
+		/*3%*/CAST((redcardspermin - MAX(redcardspermin) OVER ()) / NULLIF(MIN(redcardspermin) OVER () - MAX(redcardspermin) OVER(), 0) as Decimal(10,4)) as norm_redcards,
+		/*10%*/CAST((tklwinpercpermin - MIN(tklwinpercpermin) OVER()) / NULLIF(MAX(tklwinpercpermin) OVER() - MIN(tklwinpercpermin) OVER(), 0) as Decimal(10,4)) as norm_tklwinperc,
+		/*7%*/CAST((shotsblockedpermin - MIN(shotsblockedpermin) OVER()) / NULLIF(MAX(shotsblockedpermin) OVER() - MIN(shotsblockedpermin) OVER(), 0) as Decimal(10,4)) as norm_shotsblocked,
+		/*5%*/CAST((dispossessedpermin - MAX(dispossessedpermin) OVER ()) / NULLIF(MIN(dispossessedpermin) OVER () - MAX(dispossessedpermin) OVER(), 0) as Decimal(10,4)) as norm_dispossessed,
+		/*12%*/CAST((progpassespermin - MIN(progpassespermin) OVER()) / NULLIF(MAX(progpassespermin) OVER() - MIN(progpassespermin) OVER(), 0) as Decimal(10,4)) as norm_progpasses,
+		/*10%*/CAST((progcarriespermin - MIN(progcarriespermin) OVER()) / NULLIF(MAX(progcarriespermin) OVER() - MIN(progcarriespermin) OVER(), 0) as Decimal(10,4)) as norm_progcarries,
+		/*8%*/CAST((touchespermin - MIN(touchespermin) OVER()) / NULLIF(MAX(touchespermin) OVER() - MIN(touchespermin) OVER(), 0) as Decimal(10,4)) as norm_touches,
+		/*12%*/CAST((errorspermin - MAX(errorspermin) OVER ()) / NULLIF(MIN(errorspermin) OVER () - MAX(errorspermin) OVER(), 0) as Decimal(10,4)) as norm_errors,
+		/*5%*/CAST((passesblockedpermin - MIN(passesblockedpermin) OVER()) / NULLIF(MAX(passesblockedpermin) OVER() - MIN(passesblockedpermin) OVER(), 0) as Decimal(10,4)) as norm_passesblocked,
+		/*7%*/CAST((percentdribblerstackled - MIN(percentdribblerstackled) OVER()) / NULLIF(MAX(percentdribblerstackled) OVER() - MIN(percentdribblerstackled) OVER(), 0) as Decimal(10,4)) as norm_dribblerstackledperc,
+		/*4%*/CAST((interceptspermin - MIN(interceptspermin) OVER()) / NULLIF(MAX(interceptspermin) OVER() - MIN(interceptspermin) OVER(), 0) as Decimal(10,4)) as norm_interceptspermin
 		--passesblocked
 		--percentdribblerstackled
 
@@ -83,18 +86,21 @@ Select
 	MP,
 	Nineties,
 	CAST(
-	0.05 * norm_clearances +
-	0.1 * norm_challengeslost +
-	0.025 * norm_yellowcards +
-	0.05 *  norm_redcards +
-	0.2 * norm_tklwinperc +
-	0.1 * norm_shotsblocked +
-	0.2 * norm_dispossessed +
-	0.05 * norm_progpasses +
-	0.025 * norm_touches +
-	0.1 * norm_errors +
+	0.06 * norm_clearances +
+	0.10 * norm_challengeslost +
+	0.01 * norm_yellowcards +
+	0.03 *  norm_redcards +
+	0.10 * norm_tklwinperc +
+	0.07 * norm_shotsblocked +
+	0.05 * norm_dispossessed +
+	0.10 * norm_progcarries +
+	0.12 * norm_progpasses +
+	0.08 * norm_touches +
+	0.12 * norm_errors +
 	0.05 * norm_passesblocked +
-	0.05 * norm_dribblerstackledperc
+	0.07 * norm_dribblerstackledperc +
+	0.04 * norm_interceptspermin
+
 	as decimal(10,2)) as TotalScore
 
 From Normalized
