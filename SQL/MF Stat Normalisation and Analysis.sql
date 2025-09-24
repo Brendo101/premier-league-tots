@@ -36,4 +36,13 @@ AlteredToRate AS (
 	From Filtered
 )
 
-Select * From AlteredToRate
+Select 		TOTS,
+		PremFanTots,
+		Player,
+		Squad,
+		Pos1, 
+		Minutes,
+		MP,
+		Nineties 
+
+From AlteredToRate
