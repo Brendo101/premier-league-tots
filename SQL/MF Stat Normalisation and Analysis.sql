@@ -33,10 +33,13 @@ AlteredToRate AS (
 		CAST(Miscontrols as decimal(10,4)) / NULLIF(Minutes,0) as miscontrolspermin,
 		CAST(errors as decimal(10,4)) / NULLIF(Minutes,0) as errorspermin
 
-	From Filtered
-)
 
-Select 	
+	From Filtered
+),
+
+Normalised as 
+(Select 	
+	
 	TOTS,
 	PremFanTots,
 	Player,
@@ -51,6 +54,26 @@ Select
 	CAST((ProgCarriespermin - MIN(ProgCarriespermin) OVER()) / NULLIF(MAX(ProgCarriespermin) OVER() - MIN(ProgCarriespermin) OVER(), 0) as Decimal(10,4)) as norm_ProgCarriespermin,
 	CAST((ProgPassesReceivedpermin - MIN(ProgPassesReceivedpermin) OVER()) / NULLIF(MAX(ProgPassesReceivedpermin) OVER() - MIN(ProgPassesReceivedpermin) OVER(), 0) as Decimal(10,4)) as norm_ProgPassesReceivedpermin,
 	CAST((Touchespermin - MIN(Touchespermin) OVER()) / NULLIF(MAX(Touchespermin) OVER() - MIN(Touchespermin) OVER(), 0) as Decimal(10,4)) as norm_Touchespermin,
-	CAST((shotcreatingactionspermin - MIN(shotcreatingactionspermin) OVER()) / NULLIF(MAX(shotcreatingactionspermin) OVER() - MIN(shotcreatingactionspermin) OVER(), 0) as Decimal(10,4)) as norm_shotcreatingactionspermin
+	CAST((shotcreatingactionspermin - MIN(shotcreatingactionspermin) OVER()) / NULLIF(MAX(shotcreatingactionspermin) OVER() - MIN(shotcreatingactionspermin) OVER(), 0) as Decimal(10,4)) as norm_shotcreatingactionspermin,
+	CAST((glcreatingactionpermin - MIN(glcreatingactionpermin) OVER()) / NULLIF(MAX(glcreatingactionpermin) OVER() - MIN(glcreatingactionpermin) OVER(), 0) as Decimal(10,4)) as norm_glcreatingactionpermin,
+	CAST((tacklespermin - MIN(tacklespermin) OVER()) / NULLIF(MAX(tacklespermin) OVER() - MIN(tacklespermin) OVER(), 0) as Decimal(10,4)) as norm_tacklespermin,
+	CAST((tklwonpermin - MIN(tklwonpermin) OVER()) / NULLIF(MAX(tklwonpermin) OVER() - MIN(tklwonpermin) OVER(), 0) as Decimal(10,4)) as norm_tklwonpermin,
+	CAST((interceptspermin - MIN(interceptspermin) OVER()) / NULLIF(MAX(interceptspermin) OVER() - MIN(interceptspermin) OVER(), 0) as Decimal(10,4)) as norm_interceptspermin,
+	CAST((Astpermin - MIN(Astpermin) OVER()) / NULLIF(MAX(Astpermin) OVER() - MIN(Astpermin) OVER(), 0) as Decimal(10,4)) as norm_Astpermin,
+	CAST((nonpengoalspermin - MIN(nonpengoalspermin) OVER()) / NULLIF(MAX(nonpengoalspermin) OVER() - MIN(nonpengoalspermin) OVER(), 0) as Decimal(10,4)) as norm_nonpengoalspermin,
+	CAST((dispossessedpermin - MAX(dispossessedpermin) OVER ()) / NULLIF(MIN(dispossessedpermin) OVER () - MAX(dispossessedpermin) OVER(), 0) as Decimal(10,4)) as norm_dispossessed,
+	CAST((miscontrolspermin - MAX(miscontrolspermin) OVER ()) / NULLIF(MIN(miscontrolspermin) OVER () - MAX(miscontrolspermin) OVER(), 0) as Decimal(10,4)) as norm_miscontrolspermin,
+	CAST((errorspermin - MAX(errorspermin) OVER ()) / NULLIF(MIN(errorspermin) OVER () - MAX(errorspermin) OVER(), 0) as Decimal(10,4)) as norm_errorspermin
 
-From AlteredToRate
+From AlteredToRate)
+
+Select 
+	TOTS,
+	PremFanTots,
+	Player,
+	Squad,
+	Pos1, 
+	Minutes,
+	MP,
+	Nineties
+From Normalised
