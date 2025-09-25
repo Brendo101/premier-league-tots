@@ -36,13 +36,21 @@ AlteredToRate AS (
 	From Filtered
 )
 
-Select 		TOTS,
-		PremFanTots,
-		Player,
-		Squad,
-		Pos1, 
-		Minutes,
-		MP,
-		Nineties 
+Select 	
+	TOTS,
+	PremFanTots,
+	Player,
+	Squad,
+	Pos1, 
+	Minutes,
+	MP,
+	Nineties,
+	CAST((xAG90 - MIN(xAG90) OVER()) / NULLIF(MAX(xAG90) OVER() - MIN(xAG90) OVER(), 0) as Decimal(10,4)) as norm_xAG90, -- Expected Assisted Goals
+	CAST((ast90 - MIN(ast90) OVER()) / NULLIF(MAX(ast90) OVER() - MIN(ast90) OVER(), 0) as Decimal(10,4)) as norm_ast90,  -- Assists per 90
+	CAST((ProgPassespermin - MIN(ProgPassespermin) OVER()) / NULLIF(MAX(ProgPassespermin) OVER() - MIN(ProgPassespermin) OVER(), 0) as Decimal(10,4)) as norm_ProgPassespermin,
+	CAST((ProgCarriespermin - MIN(ProgCarriespermin) OVER()) / NULLIF(MAX(ProgCarriespermin) OVER() - MIN(ProgCarriespermin) OVER(), 0) as Decimal(10,4)) as norm_ProgCarriespermin,
+	CAST((ProgPassesReceivedpermin - MIN(ProgPassesReceivedpermin) OVER()) / NULLIF(MAX(ProgPassesReceivedpermin) OVER() - MIN(ProgPassesReceivedpermin) OVER(), 0) as Decimal(10,4)) as norm_ProgPassesReceivedpermin,
+	CAST((Touchespermin - MIN(Touchespermin) OVER()) / NULLIF(MAX(Touchespermin) OVER() - MIN(Touchespermin) OVER(), 0) as Decimal(10,4)) as norm_Touchespermin,
+	CAST((shotcreatingactionspermin - MIN(shotcreatingactionspermin) OVER()) / NULLIF(MAX(shotcreatingactionspermin) OVER() - MIN(shotcreatingactionspermin) OVER(), 0) as Decimal(10,4)) as norm_shotcreatingactionspermin
 
 From AlteredToRate
