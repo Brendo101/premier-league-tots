@@ -17,6 +17,7 @@ AlteredToRate AS (
 		Nineties,
 		xAG90,
 		ast90,
+		takeonsuccpercen,
 		CAST(ProgPasses as decimal(10,4)) / NULLIF(Minutes,0) as ProgPassespermin,
 		CAST(ProgCarries as decimal(10,4)) / NULLIF(Minutes,0) as ProgCarriespermin,
 		CAST(ProgPassesReceived as decimal(10,4)) / NULLIF(Minutes,0) as ProgPassesReceivedpermin,
@@ -63,7 +64,8 @@ Normalised as
 	CAST((nonpengoalspermin - MIN(nonpengoalspermin) OVER()) / NULLIF(MAX(nonpengoalspermin) OVER() - MIN(nonpengoalspermin) OVER(), 0) as Decimal(10,4)) as norm_nonpengoalspermin,
 	CAST((dispossessedpermin - MAX(dispossessedpermin) OVER ()) / NULLIF(MIN(dispossessedpermin) OVER () - MAX(dispossessedpermin) OVER(), 0) as Decimal(10,4)) as norm_dispossessed,
 	CAST((miscontrolspermin - MAX(miscontrolspermin) OVER ()) / NULLIF(MIN(miscontrolspermin) OVER () - MAX(miscontrolspermin) OVER(), 0) as Decimal(10,4)) as norm_miscontrolspermin,
-	CAST((errorspermin - MAX(errorspermin) OVER ()) / NULLIF(MIN(errorspermin) OVER () - MAX(errorspermin) OVER(), 0) as Decimal(10,4)) as norm_errorspermin
+	CAST((errorspermin - MAX(errorspermin) OVER ()) / NULLIF(MIN(errorspermin) OVER () - MAX(errorspermin) OVER(), 0) as Decimal(10,4)) as norm_errorspermin,
+	CAST((takeonsuccpercen - MIN(takeonsuccpercen) OVER()) / NULLIF(MAX(takeonsuccpercen) OVER() - MIN(takeonsuccpercen) OVER(), 0) as Decimal(10,4)) as norm_takeonsuccpercen
 
 From AlteredToRate)
 
@@ -75,5 +77,40 @@ Select
 	Pos1, 
 	Minutes,
 	MP,
-	Nineties
+	Nineties,
+	CAST(
+	-- Creation
+	0.13 * norm_xAG90 +
+	0.10 * norm_ast90 +
+	0.02 * norm_Astpermin +
+	0.08 * norm_nonpengoalspermin +
+	0.05 * norm_shotcreatingactionspermin +
+	0.05 * norm_glcreatingactionpermin +
+	-- Progression
+	0.03 * norm_ProgPassespermin +
+	0.03 * norm_ProgCarriespermin +
+	0.04 * norm_ProgPassesReceivedpermin +
+	0.02 * norm_Touchespermin +
+	0.05 * norm_takeonsuccpercen +
+	-- Defensive
+	0.13 * norm_tacklespermin +
+	0.07 * norm_tklwonpermin +
+	0.06 * norm_interceptspermin +
+	0.04 * norm_dispossessed +
+	0.03 * norm_miscontrolspermin +
+	0.02 * norm_errorspermin as decimal(10,2)) as CompositeScore
+
+
 From Normalised
+
+Order By CompositeScore DESC
+
+--SELECT
+--  AVG(CASE WHEN TOTS='Yes' THEN norm_xAG90 END) AS tots_xAG90,
+--  AVG(CASE WHEN TOTS='No'  THEN norm_xAG90 END) AS non_xAG90,
+--  AVG(CASE WHEN TOTS='Yes' THEN norm_ast90 END) AS tots_ast90,
+--  AVG(CASE WHEN TOTS='No'  THEN norm_ast90 END) AS non_ast90,
+--  AVG(CASE WHEN TOTS='Yes' THEN norm_tacklespermin END) AS tots_tackles,
+--  AVG(CASE WHEN TOTS='No'  THEN norm_tacklespermin END) AS non_tackles
+--FROM Normalised
+--WHERE Pos1='MF';
