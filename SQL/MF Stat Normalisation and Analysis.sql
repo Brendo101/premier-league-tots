@@ -80,14 +80,14 @@ Select
 	Nineties,
 	CAST(
 	-- Creation
-	0.08 * norm_xAG90 +
+	0.11 * norm_xAG90 +
 	0.05 * norm_ast90 +
 	--0.02 * norm_Astpermin +
-	0.06 * norm_nonpengoalspermin +
-	0.07 * norm_shotcreatingactionspermin +
-	0.04 * norm_glcreatingactionpermin +
+	0.04 * norm_nonpengoalspermin +
+	0.06 * norm_shotcreatingactionspermin +
+	0.05 * norm_glcreatingactionpermin +
 	-- Progression
-	0.07 * norm_ProgPassespermin +
+	0.08 * norm_ProgPassespermin +
 	0.06 * norm_ProgCarriespermin +
 	0.04 * norm_ProgPassesReceivedpermin +
 	0.07 * norm_Touchespermin +
@@ -95,10 +95,10 @@ Select
 	-- Defensive
 	0.07 * norm_tacklespermin +
 	0.10 * norm_tklwonpermin +
-	0.06 * norm_interceptspermin +
-	0.05 * norm_dispossessed +
-	0.05 * norm_miscontrolspermin +
-	0.05 * norm_errorspermin as decimal(10,2)) as CompositeScore
+	0.07 * norm_interceptspermin +
+	0.04 * norm_dispossessed +
+	0.04 * norm_miscontrolspermin +
+	0.04 * norm_errorspermin as decimal(10,2)) as CompositeScore
 
 
 From Normalised
