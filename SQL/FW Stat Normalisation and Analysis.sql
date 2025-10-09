@@ -67,7 +67,15 @@ normalised as (Select
 	CAST((TakeOnAttemptedpermin - MIN(TakeOnAttemptedpermin) OVER()) / NULLIF(MAX(TakeOnAttemptedpermin) OVER() - MIN(TakeOnAttemptedpermin) OVER(), 0) as Decimal(10,4)) as norm_TakeOnAttemptedpermin,
 	CAST((TakeOnSuccpermin - MIN(TakeOnSuccpermin) OVER()) / NULLIF(MAX(TakeOnSuccpermin) OVER() - MIN(TakeOnSuccpermin) OVER(), 0) as Decimal(10,4)) as norm_TakeOnSuccpermin,
 	CAST((Dispossessedpermin - MAX(Dispossessedpermin) OVER ()) / NULLIF(MIN(Dispossessedpermin) OVER () - MAX(Dispossessedpermin) OVER(), 0) as Decimal(10,4)) as norm_Dispossessedpermin,
-	CAST((Miscontrolspermin - MAX(Miscontrolspermin) OVER ()) / NULLIF(MIN(Miscontrolspermin) OVER () - MAX(Miscontrolspermin) OVER(), 0) as Decimal(10,4)) as norm_Miscontrolspermin
+	CAST((Miscontrolspermin - MAX(Miscontrolspermin) OVER ()) / NULLIF(MIN(Miscontrolspermin) OVER () - MAX(Miscontrolspermin) OVER(), 0) as Decimal(10,4)) as norm_Miscontrolspermin,
+	CAST((TakeOnSuccPercen - MIN(TakeOnSuccPercen) OVER()) / NULLIF(MAX(TakeOnSuccPercen) OVER() - MIN(TakeOnSuccPercen) OVER(), 0) as Decimal(10,4)) as norm_TakeOnSuccPercen,
+	CAST((xAG90 - MIN(xAG90) OVER()) / NULLIF(MAX(xAG90) OVER() - MIN(xAG90) OVER(), 0) as Decimal(10,4)) as norm_xAG90,
+	CAST((xpectedAssistedGoals - MIN(xpectedAssistedGoals) OVER()) / NULLIF(MAX(xpectedAssistedGoals) OVER() - MIN(xpectedAssistedGoals) OVER(), 0) as Decimal(10,4)) as norm_xpectedAssistedGoals,
+	CAST((ast90 - MIN(ast90) OVER()) / NULLIF(MAX(ast90) OVER() - MIN(ast90) OVER(), 0) as Decimal(10,4)) as norm_ast90,
+	CAST((gls90 - MIN(gls90) OVER()) / NULLIF(MAX(gls90) OVER() - MIN(gls90) OVER(), 0) as Decimal(10,4)) as norm_gls90,
+	CAST((npxG90 - MIN(npxG90) OVER()) / NULLIF(MAX(npxG90) OVER() - MIN(npxG90) OVER(), 0) as Decimal(10,4)) as norm_npxG90,
+	CAST((xpectedGoals - MIN(xpectedGoals) OVER()) / NULLIF(MAX(xpectedGoals) OVER() - MIN(xpectedGoals) OVER(), 0) as Decimal(10,4)) as norm_xpectedGoals,
+	CAST((nonpengoals90 - MIN(nonpengoals90) OVER()) / NULLIF(MAX(nonpengoals90) OVER() - MIN(nonpengoals90) OVER(), 0) as Decimal(10,4)) as norm_nonpengoals90
 From AlteredToRate)
 
 Select 
@@ -81,11 +89,11 @@ Select
 	Nineties,
 	CAST(
   0.12 * norm_nonpengoalspermin +
-  0.10 * npxG90 +
-  0.08 * gls90 +
-  0.07 * xpectedgoals +
-  0.08 * xAG90 +
-  0.07 * xpectedassistedgoals +
+  0.10 * norm_npxG90 +
+  0.08 * norm_gls90 +
+  0.07 * norm_xpectedgoals +
+  0.08 * norm_xAG90 +
+  0.07 * norm_xpectedassistedgoals +
   0.06 * norm_astpermin +
   0.07 * norm_shotcreatingactionspermin +
   0.05 * norm_glcreatingactionpermin +
