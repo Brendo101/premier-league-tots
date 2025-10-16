@@ -21,9 +21,9 @@ Unlike media or fan-voted TOTS, this selection is based **entirely on performanc
 - ✅ **Initial Queries**: Basic SELECT queries to pull raw stats.  
 - ✅ **Normalization**: Using SQL `OVER()` for min–max scaling.  
 - ✅ **Position Bundles**: Finalize metrics used per position.  
-- 🔲 **Weighting System**: Assign stat weights for GK, DEF, MID, FW.  
-- 🔲 **Composite Scores**: SQL queries to calculate ranking scores.  
-- 🔲 **Filtering**: Exclude players with too few minutes played.  
+- ✅ **Weighting System**: Assign stat weights for GK, DEF, MID, FW.  
+- ✅ **Composite Scores**: SQL queries to calculate ranking scores.  
+- ✅ **Filtering**: Exclude players with too few minutes played.  
 - 🔲 **Output & Viz**: Export results for visualization (Power BI, Python, or Excel).  
 - 🔲 **Comparison**: Compare with official TOTS (and pundit selections).  
 
