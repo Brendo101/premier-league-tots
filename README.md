@@ -24,8 +24,8 @@ Unlike media or fan-voted TOTS, this selection is based **entirely on performanc
 - ✅ **Weighting System**: Assign stat weights for GK, DEF, MID, FW.  
 - ✅ **Composite Scores**: SQL queries to calculate ranking scores.  
 - ✅ **Filtering**: Exclude players with too few minutes played.  
-- 🔲 **Output & Viz**: Export results for visualization (Power BI, Python, or Excel).  
-- 🔲 **Comparison**: Compare with official TOTS (and pundit selections).  
+- ✅ **Output & Viz**: Export results for visualization (Power BI, Python, or Excel).  
+- ✅ **Comparison**: Compare with official TOTS (and pundit selections).  
 
 ---
 
